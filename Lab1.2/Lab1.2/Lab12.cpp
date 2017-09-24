@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
 	deviceInfo.cbSize = sizeof(SP_DEVINFO_DATA);
 	vector<_DEVICE_DESCRIPTION> devices = getDescriptions(getInfo(hDev, deviceInfo));
 
+	if (devices.size() == 0) cout << "Not found." << endl;
+	else cout << devices.size() << endl;
+
 	for (int i = 0; i < devices.size(); i++)
 	{
 		cout << i; 

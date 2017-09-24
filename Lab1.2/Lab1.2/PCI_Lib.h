@@ -12,6 +12,7 @@ struct _DEVICE_DESCRIPTION
 };
 
 _DEVICE_DESCRIPTION _devicesLib[] = {
+		{ "0x8086","0x3B09", "3B09", "Intel(R) HM55 Express Chipset LPC Interface Controller"},
 		{ "0x165C","0x0002", "FT232BL", "FT232BL" },
 		{ "0x16AE","0x000A", "SafeXcel-1841", "Crypto Accelerator" },
 		{ "0x16AE","0x1141", "SafeXcel-1141", "Crypto Accelerator" },
@@ -564,6 +565,7 @@ _DEVICE_DESCRIPTION _devicesLib[] = {
 	{ "0x8086","0x0011", "0x108D", "Ethernet Controller" },
 	{ "0x8086","0x0042", "Intel graphics", "Intel Q57/H55 Clarkdale (Onboard on D2912-A1x)" },
 	{ "0x8086","0x0044", "0044", "Intel(R) Processor DRAM Controller" },
+	{ "0x8086","0x0045", "Zotac Intel(R) processor PCI Express Root Port", "Zotac, Intel"},
 	{ "0x8086","0x0046", "Intel(R) HD Graphics (Core i3)", "Intel(R) HD Graphics" },
 	{ "0x8086","0x0054", "not known", "Audio" },
 	{ "0x8086","0x0082", "6205", "Centrino Advanced-N 6205 " },
@@ -7882,4 +7884,4 @@ _DEVICE_DESCRIPTION _devicesLib[] = {
 	{ "0x11D5","0x0118", "10118", "DR11-W emulator" },
 };
 
-#define LENGTH (sizeof(_devices) / sizeof(_DEVICE_DESCRIPTION))
+#define LENGTH (sizeof(_devicesLib) / sizeof(_DEVICE_DESCRIPTION))
