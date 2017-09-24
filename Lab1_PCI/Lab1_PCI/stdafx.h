@@ -15,6 +15,5 @@
 #include <devguid.h>
 #include <RegStr.h>
 #include <locale.h>
-#include <string.h>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

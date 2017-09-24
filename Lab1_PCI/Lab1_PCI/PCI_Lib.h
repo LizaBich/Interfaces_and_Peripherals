@@ -11,7 +11,7 @@ struct _DEVICE_DESCRIPTION
 	string _description;
 };
 
-_DEVICE_DESCRIPTION _devices[] = {
+_DEVICE_DESCRIPTION _devicesLib[] = {
 		{ "0x165C","0x0002", "FT232BL", "FT232BL" },
 		{ "0x16AE","0x000A", "SafeXcel-1841", "Crypto Accelerator" },
 		{ "0x16AE","0x1141", "SafeXcel-1141", "Crypto Accelerator" },
@@ -4423,7 +4423,7 @@ _DEVICE_DESCRIPTION _devices[] = {
 	{ "0x104C","0xAC10", "PCI1050", "PC Card Controller" },
 	{ "0x104C","0xAC11", "PCI1030/1053", "PC Card Controller" },
 	{ "0x104C","0xAC12", "PCI1131", "PC card CardBus Controller" },
-	{ "0x104C","0xAC13", "PCI9066", "Texas InstrumentsÃ¢â€Å¾Â¢ PCIxx12 Integrated FlashMedia Controller" },
+	{ "0x104C","0xAC13", "PCI9066", "Texas Instruments PCIxx12 Integrated FlashMedia Controller" },
 	{ "0x104C","0xAC15", "PCI-1131", "CardBus Controller" },
 	{ "0x104C","0xAC16", "PCI1250", "PC Card CardBus Controller" },
 	{ "0x104C","0xAC17", "PCI1220", "CardBus Controller" },
