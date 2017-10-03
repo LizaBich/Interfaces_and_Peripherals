@@ -1,0 +1,12 @@
+﻿  stdafx.cpp
+  Lab2HDD.cpp
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(3): warning C4603: _WIN32_DCOM: макрос не определен или определение изменилось после использования предкомпилированного заголовка
+  d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(3): note: Добавление макроопределения в предкомпилированный заголовок вместо определения его здесь
+  d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(4): note: использование предварительно скомпилированного заголовка
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(43): warning C4018: <: несоответствие типов со знаком и без знака
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(177): warning C4353: нестандартное расширение: константа 0 в качестве выражения функции.  Следует заменить на подставляемую функцию "__noop"
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(182): warning C4353: нестандартное расширение: константа 0 в качестве выражения функции.  Следует заменить на подставляемую функцию "__noop"
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(187): warning C4353: нестандартное расширение: константа 0 в качестве выражения функции.  Следует заменить на подставляемую функцию "__noop"
+d:\git\iapd\lab2_hdd\lab2_hdd\lab2hdd.cpp(192): warning C4353: нестандартное расширение: константа 0 в качестве выражения функции.  Следует заменить на подставляемую функцию "__noop"
+  Lab2_HDD.vcxproj -> D:\Git\IaPD\Lab2_HDD\Debug\Lab2_HDD.exe
+  Lab2_HDD.vcxproj -> D:\Git\IaPD\Lab2_HDD\Debug\Lab2_HDD.pdb (Partial PDB)
