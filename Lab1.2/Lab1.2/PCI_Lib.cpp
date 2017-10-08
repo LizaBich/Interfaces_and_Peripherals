@@ -20,7 +20,6 @@ void DevicesLib::GetVendorAndDeviceNames(vector<PCI_DEVTABLE> *devices)
 		cout << "\nНевозможно открыть файл " << FILE_PATH << "!" << endl;
 		return;
 	}
-	int i = 0;
 	while (!file.eof())
 	{ 
 		if (file.eof()) break;
@@ -34,8 +33,6 @@ void DevicesLib::GetVendorAndDeviceNames(vector<PCI_DEVTABLE> *devices)
 		else if (temp[0] == '\t' && temp[1] != '\t') {
 			FindEqualDevice(string(temp), devices);
 		}
-		if (i == 29477) break;
-		i++;
 	}
 	file.close();
 	return;

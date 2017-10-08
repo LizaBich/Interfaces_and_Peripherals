@@ -1,9 +1,5 @@
-﻿  stdafx.cpp
-  PCI_Lib.cpp
-d:\git\iapd\lab1.2\lab1.2\pci_lib.cpp(58): warning C4018: <: несоответствие типов со знаком и без знака
-d:\git\iapd\lab1.2\lab1.2\pci_lib.cpp(94): warning C4018: <: несоответствие типов со знаком и без знака
-  Lab12.cpp
-d:\git\iapd\lab1.2\lab1.2\lab12.cpp(39): warning C4018: <: несоответствие типов со знаком и без знака
-  Создание кода...
+﻿  PCI_Lib.cpp
+d:\git\iapd\lab1.2\lab1.2\pci_lib.cpp(57): warning C4018: <: несоответствие типов со знаком и без знака
+d:\git\iapd\lab1.2\lab1.2\pci_lib.cpp(82): warning C4018: <: несоответствие типов со знаком и без знака
   Lab1.2.vcxproj -> D:\Git\IaPD\Lab1.2\Debug\Lab1.2.exe
   Lab1.2.vcxproj -> D:\Git\IaPD\Lab1.2\Debug\Lab1.2.pdb (Partial PDB)
