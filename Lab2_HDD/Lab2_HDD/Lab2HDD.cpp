@@ -5,8 +5,14 @@
 #include <string>
 #include <comdef.h>
 #include <WbemIdl.h>
+#include <Ntddscsi.h>
 
 #pragma comment(lib, "wbemuuid.lib")
+
+#define MAX_COUNT_OF_LOGICAL_DISKS 26
+#define CODE_OF_A 97
+//#define TO_GIGABYTE 1073741824
+#define TO_GIGABYTE 1000000000
 
 using namespace std;
 
@@ -19,29 +25,36 @@ struct HDD_DEVICE
 	unsigned long long totalSpace;
 	unsigned long long freeSpace;
 	string conInterface;
-	LONG *pVal;
-	long count;
+	bool pio;
 };
 
 bool GetInformationAboutDiscs(vector<HDD_DEVICE> *);
 bool InitializeWMI(IWbemLocator **, IWbemServices **, IEnumWbemClassObject **, IWbemClassObject **);
 bool CloseWMI(IWbemServices **, IEnumWbemClassObject **, IWbemClassObject **);
 string& BstrToStdString(const BSTR bstr, string& dst, int cp = CP_ACP);
-// conversion with temp.
 string BstrToStdString(BSTR bstr, int cp = CP_ACP);
 unsigned long long GetDiskSize(const char *);
 void GetDiskFreeMem(HDD_DEVICE **);
-long GetSafeArray(LONG **, SAFEARRAY **);
-void OutputCapabilities(LONG **);
+void PioOrDma(HDD_DEVICE **);
+void PrintInfo(vector<HDD_DEVICE>);
+
 
 int main()
 {
 	vector<HDD_DEVICE> devices;
 
+	PrintInfo(devices);
+
+	return 0;
+}
+
+
+void PrintInfo(vector<HDD_DEVICE> devices)
+{
 	if (!GetInformationAboutDiscs(&devices))
 	{
 		cout << "Error in app." << endl;
-		return 0;
+		return;
 	}
 
 	for (int i = 0; i < devices.size(); ++i)
@@ -49,23 +62,14 @@ int main()
 		cout << "\nModel: " << devices[i].model.c_str() << endl
 			<< "Firmware version: " << devices[i].firmwareRevision.c_str() << endl
 			<< "Serial number: " << devices[i].serialNumber.c_str() << endl
-			<< "Memory(free/is used/total): " << devices[i].freeSpace << "/" << devices[i].totalSpace - devices[i].freeSpace << "/" << devices[i].totalSpace << endl 
-			<< "Interface type: " << devices[i].conInterface.c_str() << endl << endl;
-	}
-
-	return 0;
-}
-
-void OutputCapabilities(LONG **pVal, long count)
-{
-	for (int j = 0; j < count; ++j)
-	{
-		LONG lVal = (*pVal)[j];
-		switch (lVal)
-		{
-
+			<< "Memory(free/is used/total): " << devices[i].freeSpace / TO_GIGABYTE << " / " << devices[i].totalSpace / TO_GIGABYTE - devices[i].freeSpace / TO_GIGABYTE << " / " << devices[i].totalSpace / TO_GIGABYTE << endl
+			<< "Interface type: " << devices[i].conInterface.c_str() << endl;
+		if (devices[i].pio) {
+			cout << "Transfer mode: PIO" << endl;
 		}
-		cout << ", ";
+		else {
+			cout << "Transfer mode: DMA" << endl;
+		}
 	}
 }
 
@@ -214,31 +218,16 @@ bool GetInformationAboutDiscs(vector<HDD_DEVICE> *devices)
 		dev->conInterface = BstrToStdString(vtProp.bstrVal);
 		VariantClear(&vtProp);
 
-		hRes = pclsObj->Get(L"Capabilities", 0, &vtProp, 0, 0);
-		if (FALSE(hRes)) cout << "\nInvalid getting of value!" << endl;
-		dev->pVal = NULL;
-		dev->count = 0;
-		dev->count = GetSafeArray(&(dev->pVal), &vtProp.parray);
-		VariantClear(&vtProp);
-
 		dev->totalSpace = GetDiskSize(dev->deviceID.c_str());
 		GetDiskFreeMem(&dev);
+
+		PioOrDma(&dev);
 
 		devices->push_back(*dev);
 		delete dev;
 	}
 	CloseWMI(&pLoc, &pSvc, &pEnumerator, &pclsObj);
 	return true;
-}
-
-long GetSafeArray(LONG **pVal, SAFEARRAY **capabilities)
-{
-	HRESULT hr = SafeArrayAccessData(*capabilities, (void**)pVal);
-	if (FAILED(hr)) return 0;
-	long lowerBound, upperBound;
-	SafeArrayGetLBound(*capabilities, 1, &lowerBound);
-	SafeArrayGetUBound(*capabilities, 1, &upperBound);
-	return upperBound - lowerBound + 1;
 }
 
 string& BstrToStdString(const BSTR bstr, string& dst, int cp)
@@ -297,22 +286,27 @@ unsigned long long GetDiskSize(const char *drive)
 void GetDiskFreeMem(HDD_DEVICE **dev)
 {
 	DWORD dr = GetLogicalDrives();
-	for (int i = 0; i < 26; i++)
+	const string BASE_DRIVE_NAME = "\\\\.\\PHYSICALDRIVE";
+	(*dev)->freeSpace = 0;
+	for (int i = 0; i < MAX_COUNT_OF_LOGICAL_DISKS; i++)
 	{
 		if ((dr >> i) & 1) {
 			ULONGLONG FreeBytesAvailable, TotalNumberOfBytes, TotalNumberOfFreeBytes;
-			string directory = " :\\\0";
-			directory[0] = (char)(65 + i);
-			bool rez = GetDiskFreeSpaceEx((LPCWSTR)directory.c_str(), (PULARGE_INTEGER)&FreeBytesAvailable, (PULARGE_INTEGER)&TotalNumberOfBytes, (PULARGE_INTEGER)&TotalNumberOfFreeBytes);
-			if (rez == false) break;
-			HANDLE h = CreateFile((LPCWSTR)directory.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-			if (h == INVALID_HANDLE_VALUE) break;
+			wstring directory = L" :\\\0";
+			directory[0] = (char)(CODE_OF_A + i);
+			bool rez = GetDiskFreeSpaceEx(directory.c_str(), (PULARGE_INTEGER)&FreeBytesAvailable, (PULARGE_INTEGER)&TotalNumberOfBytes, (PULARGE_INTEGER)&TotalNumberOfFreeBytes);
+			if (rez == false) continue;
+			directory = L"\\\\.\\ :";
+			directory[4] = (char)(CODE_OF_A + i);
+			HANDLE h = CreateFile(directory.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+			if (h == INVALID_HANDLE_VALUE) continue;
 			LPCTSTR szPhysical;
 			STORAGE_DEVICE_NUMBER sd = { 0 };
 			DWORD dwRet;
 			if (DeviceIoControl(h, IOCTL_STORAGE_GET_DEVICE_NUMBER, NULL, 0, &sd, sizeof(STORAGE_DEVICE_NUMBER), &dwRet, NULL))
 			{
-				if (string("\\\\.\\PHYSICALDRIVE" + sd.DeviceNumber) == (*dev)->deviceID)
+				string name = BASE_DRIVE_NAME + to_string(sd.DeviceNumber) + "\0";
+				if (strcmp(name.c_str(), (*dev)->deviceID.c_str()) == 0)
 				{
 					(*dev)->freeSpace += TotalNumberOfFreeBytes;
 				}
@@ -320,4 +314,38 @@ void GetDiskFreeMem(HDD_DEVICE **dev)
 			CloseHandle(h);
 		}
 	}
+}
+
+void PioOrDma(HDD_DEVICE **dev)
+{
+	HANDLE device = CreateFileA((LPCSTR)(*dev)->deviceID.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+	if (device == INVALID_HANDLE_VALUE)
+		return;
+
+	STORAGE_PROPERTY_QUERY query = {};
+	query.PropertyId = StorageAdapterProperty;
+	query.QueryType = PropertyStandardQuery;
+
+	STORAGE_ADAPTER_DESCRIPTOR descriptor = {};
+
+	DWORD read;
+	if (!DeviceIoControl(device, IOCTL_STORAGE_QUERY_PROPERTY,
+		&query,
+		sizeof(query),
+		&descriptor,
+		sizeof(descriptor),
+		&read,
+		NULL
+	))
+	{
+		cout << "Error: " << GetLastError() << endl;
+		return;
+	}
+	else
+	{
+		(*dev)->pio = descriptor.AdapterUsesPio;
+	}
+
+	CloseHandle(device);
+	return;
 }
