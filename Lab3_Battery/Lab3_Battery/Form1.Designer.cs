@@ -34,6 +34,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.AvailableTime = new System.Windows.Forms.Label();
             this.AvailablePower = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.TimeOfDisable = new System.Windows.Forms.TextBox();
+            this.OKButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -87,11 +90,40 @@
             this.AvailablePower.Size = new System.Drawing.Size(0, 13);
             this.AvailablePower.TabIndex = 5;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 89);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(141, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Время выключения (мин.):";
+            // 
+            // TimeOfDisable
+            // 
+            this.TimeOfDisable.Location = new System.Drawing.Point(159, 86);
+            this.TimeOfDisable.Name = "TimeOfDisable";
+            this.TimeOfDisable.Size = new System.Drawing.Size(69, 20);
+            this.TimeOfDisable.TabIndex = 7;
+            // 
+            // OKButton
+            // 
+            this.OKButton.Location = new System.Drawing.Point(93, 112);
+            this.OKButton.Name = "OKButton";
+            this.OKButton.Size = new System.Drawing.Size(75, 23);
+            this.OKButton.TabIndex = 8;
+            this.OKButton.Text = "OK";
+            this.OKButton.UseVisualStyleBackColor = true;
+            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(260, 106);
+            this.ClientSize = new System.Drawing.Size(260, 145);
+            this.Controls.Add(this.OKButton);
+            this.Controls.Add(this.TimeOfDisable);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.AvailablePower);
             this.Controls.Add(this.AvailableTime);
             this.Controls.Add(this.label3);
@@ -114,6 +146,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label AvailableTime;
         private System.Windows.Forms.Label AvailablePower;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox TimeOfDisable;
+        private System.Windows.Forms.Button OKButton;
     }
 }
 

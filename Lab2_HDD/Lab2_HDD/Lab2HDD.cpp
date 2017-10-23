@@ -13,6 +13,7 @@
 #define CODE_OF_A 97
 //#define TO_GIGABYTE 1073741824
 #define TO_GIGABYTE 1000000000
+#define BYTE_SIZE 8
 
 using namespace std;
 
@@ -26,6 +27,7 @@ struct HDD_DEVICE
 	unsigned long long freeSpace;
 	string conInterface;
 	bool pio;
+	string supportedAta;
 };
 
 bool GetInformationAboutDiscs(vector<HDD_DEVICE> *);
@@ -37,6 +39,8 @@ unsigned long long GetDiskSize(const char *);
 void GetDiskFreeMem(HDD_DEVICE **);
 void PioOrDma(HDD_DEVICE **);
 void PrintInfo(vector<HDD_DEVICE>);
+void getAtaSupportStandarts(HDD_DEVICE **);
+void getAtaPioDmaSupportStandarts(HANDLE);
 
 
 int main()
@@ -223,6 +227,8 @@ bool GetInformationAboutDiscs(vector<HDD_DEVICE> *devices)
 
 		PioOrDma(&dev);
 
+		getAtaSupportStandarts(&dev);
+
 		devices->push_back(*dev);
 		delete dev;
 	}
@@ -321,31 +327,143 @@ void PioOrDma(HDD_DEVICE **dev)
 	HANDLE device = CreateFileA((LPCSTR)(*dev)->deviceID.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 	if (device == INVALID_HANDLE_VALUE)
 		return;
+	getAtaPioDmaSupportStandarts(device);
+	
+	return;
+}
 
-	STORAGE_PROPERTY_QUERY query = {};
-	query.PropertyId = StorageAdapterProperty;
-	query.QueryType = PropertyStandardQuery;
+void getAtaSupportStandarts(HDD_DEVICE **dev) {
 
-	STORAGE_ADAPTER_DESCRIPTOR descriptor = {};
+	HANDLE diskHandle = CreateFileA((LPCSTR)(*dev)->deviceID.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+	if (diskHandle == INVALID_HANDLE_VALUE)
+		return;
 
-	DWORD read;
-	if (!DeviceIoControl(device, IOCTL_STORAGE_QUERY_PROPERTY,
-		&query,
-		sizeof(query),
-		&descriptor,
-		sizeof(descriptor),
-		&read,
-		NULL
-	))
-	{
-		cout << "Error: " << GetLastError() << endl;
+	UCHAR identifyDataBuffer[512 + sizeof(ATA_PASS_THROUGH_EX)] = { 0 };
+
+	ATA_PASS_THROUGH_EX &PTE = *(ATA_PASS_THROUGH_EX *)identifyDataBuffer;
+	PTE.Length = sizeof(PTE);
+	PTE.TimeOutValue = 10;
+	//Indicates the size, in bytes, of the data buffer. 
+	//If an underrun occurs, the miniport driver must update this member to the number of bytes that were actually transferred.
+	PTE.DataTransferLength = 512;
+	//Specifies the offset, in bytes, from the beginning of this structure to the data buffer
+	PTE.DataBufferOffset = sizeof(ATA_PASS_THROUGH_EX);
+	PTE.AtaFlags = ATA_FLAGS_DATA_OUT;		//Read data from the device.
+
+											// is used to report the contents of the IDE controller registers.
+	IDEREGS *ideRegs = (IDEREGS *)PTE.CurrentTaskFile;
+
+	//Holds the contents of the IDE command register.
+	//(ATA_CMD_IDENTIFY -return a buffer of 512 bytes called the identification space)
+	ideRegs->bCommandReg = 0xEC;
+
+	//Sends a control code directly to a specified device driver
+	if (!DeviceIoControl(diskHandle, IOCTL_ATA_PASS_THROUGH,	//to send almost any ATA command to a target device,
+		&PTE, sizeof(identifyDataBuffer), &PTE, sizeof(identifyDataBuffer), NULL, NULL)) {
+		cout << "in control " << GetLastError() << endl;
 		return;
 	}
-	else
-	{
-		(*dev)->pio = descriptor.AdapterUsesPio;
+
+	WORD *data = (WORD *)(identifyDataBuffer + sizeof(ATA_PASS_THROUGH_EX));
+	short ataSupportByte = data[80];
+	int i = 2 * BYTE_SIZE;
+	int bitArray[2 * BYTE_SIZE];
+	while (i--) {
+		bitArray[i] = ataSupportByte & 0b1000000000000000 ? 1 : 0;
+		ataSupportByte = ataSupportByte << 1;
 	}
 
-	CloseHandle(device);
-	return;
+	for (int i = 8; i >= 4; i--) {
+		if (bitArray[i] == 1) {
+			(*dev)->supportedAta += string("ATA") + to_string(i);
+		}
+	}
+	cout << endl;
+}
+
+void getAtaPioDmaSupportStandarts(HANDLE diskHandle) 
+{
+
+	UCHAR identifyDataBuffer[512 + sizeof(ATA_PASS_THROUGH_EX)] = { 0 };
+
+	ATA_PASS_THROUGH_EX &PTE = *(ATA_PASS_THROUGH_EX *)identifyDataBuffer;	//Структура для отправки АТА команды устройству
+	PTE.Length = sizeof(PTE);
+	PTE.TimeOutValue = 10;									//Размер структуры
+															//Indicates the size, in bytes, of the data buffer. 
+															//If an underrun occurs, the miniport driver must update this member to the number of bytes that were actually transferred.
+	PTE.DataTransferLength = 512;							//Размер буфера для данных
+	PTE.DataBufferOffset = sizeof(ATA_PASS_THROUGH_EX);		//Смещение в байтах от начала структуры до буфера данных
+	PTE.AtaFlags = ATA_FLAGS_DATA_IN;						//Флаг, говорящий о чтении байтов из устройства
+
+															// is used to report the contents of the IDE controller registers.
+	IDEREGS *ideRegs = (IDEREGS *)PTE.CurrentTaskFile;
+	//Holds the contents of the IDE command register.
+	//(ATA_CMD_IDENTIFY -return a buffer of 512 bytes called the identification space)
+	ideRegs->bCommandReg = 0xEC;
+
+	//Производим запрос устройству
+	if (!DeviceIoControl(diskHandle,
+		IOCTL_ATA_PASS_THROUGH,								//Флаг, говорящий что мы посылаем структуру с командами типа ATA_PASS_THROUGH_EX
+		&PTE, sizeof(identifyDataBuffer), &PTE, sizeof(identifyDataBuffer), NULL, NULL)) {
+		cout << GetLastError() << std::endl;
+		return;
+	}
+	WORD *data = (WORD *)(identifyDataBuffer + sizeof(ATA_PASS_THROUGH_EX));	//Получаем указатель на массив полученных данных
+	short ataSupportByte = data[80];
+	int i = 2 * BYTE_SIZE;
+	int bitArray[2 * BYTE_SIZE];
+	//Превращаем байты с информацией о поддержке ATA в массив бит
+	while (i--) {
+		bitArray[i] = ataSupportByte & 32768 ? 1 : 0;
+		ataSupportByte = ataSupportByte << 1;
+	}
+
+	//Анализируем полученный массив бит.
+	cout << "ATA Support:   ";
+	for (int i = 8; i >= 4; i--) {
+		if (bitArray[i] == 1) {
+			cout << "ATA" << i;
+			if (i != 4) {
+				cout << ", ";
+			}
+		}
+	}
+	cout << endl;
+
+	//Вывод поддерживаемых режимов DMA
+	unsigned short dmaSupportedBytes = data[63];
+	int i2 = 2 * BYTE_SIZE;
+	//Превращаем байты с информацией о поддержке DMA в массив бит
+	while (i2--) {
+		bitArray[i2] = dmaSupportedBytes & 32768 ? 1 : 0;
+		dmaSupportedBytes = dmaSupportedBytes << 1;
+	}
+
+	//Анализируем полученный массив бит.
+	cout << "DMA Support:   ";
+	for (int i = 0; i <8; i++) {
+		if (bitArray[i] == 1) {
+			cout << "DMA" << i;
+			if (i != 2) cout << ", ";
+		}
+	}
+	cout << endl;
+
+	unsigned short pioSupportedBytes = data[63];
+	int i3 = 2 * BYTE_SIZE;
+	//Превращаем байты с информацией о поддержке PIO в массив бит
+	while (i3--) {
+		bitArray[i3] = pioSupportedBytes & 32768 ? 1 : 0;
+		pioSupportedBytes = pioSupportedBytes << 1;
+	}
+
+	//Анализируем полученный массив бит.
+	cout << "PIO Support:   ";
+	for (int i = 0; i <2; i++) {
+		if (bitArray[i] == 1) {
+			cout << "PIO" << i + 3;
+			if (i != 1) cout << ", ";
+		}
+	}
+	cout << endl;
 }
