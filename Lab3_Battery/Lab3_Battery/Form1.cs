@@ -35,8 +35,8 @@ namespace Lab3_Battery
             _timer.Tick += TimerEvent;
             _timer.Start();
 
-            TimeOfDisable.Enabled = _battery.ConnectType != "Online";
-            OKButton.Enabled = _battery.ConnectType != "Online";
+            TimeOfDisable.Enabled = _battery.ConnectType != Battery.OnlineStatus;
+            OKButton.Enabled = _battery.ConnectType != Battery.OnlineStatus;
 
             Closing += AppClose;
         }
@@ -52,10 +52,10 @@ namespace Lab3_Battery
             AvailablePower.Text = _battery.GetAvailPower();
             AvailableTime.Text = _battery.GetAvailTime();
 
-            TimeOfDisable.Enabled = _battery.ConnectType != "Online";
-            OKButton.Enabled = _battery.ConnectType != "Online";
+            TimeOfDisable.Enabled = _battery.ConnectType != Battery.OnlineStatus;
+            OKButton.Enabled = _battery.ConnectType != Battery.OnlineStatus;
 
-            if (_battery.ConnectType == "Online") _battery.ReturnOldTimeValue();
+            if (_battery.ConnectType == Battery.OnlineStatus) _battery.ReturnOldTimeValue();
         }
 
         /// <summary>

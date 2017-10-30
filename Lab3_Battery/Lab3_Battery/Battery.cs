@@ -9,8 +9,11 @@ namespace Lab3_Battery
     /// <summary>
     /// Класс, позволяющий получить основную информацию о батарее.
     /// </summary>
-    class Battery
+    public class Battery
     {
+        public const string OnlineStatus = "Online";
+        public const string OfflineStatus = "Offline";
+        private const string Progname = "cmd.exe";
         /// <summary>
         /// Свойство, описывающее оставшийся заряд батареи.
         /// </summary>
@@ -48,8 +51,8 @@ namespace Lab3_Battery
             ConnectType = SystemInformation.PowerStatus.PowerLineStatus.ToString();
             switch (ConnectType)
             {
-                case "Online": return "AC";
-                case "Offline": return "Battery";
+                case OnlineStatus: return "AC";
+                case OfflineStatus: return "Battery";
                 default: return "Unknown";
             }
         }
@@ -61,11 +64,11 @@ namespace Lab3_Battery
         public string GetAvailTime()
         {
             AvailTime = SystemInformation.PowerStatus.BatteryLifeRemaining;
-            if (AvailTime != -1 && ConnectType == "Offline")
+            if (AvailTime != -1 && ConnectType == OfflineStatus)
             {
                 return new TimeSpan(0, AvailTime / 60, 0).ToString();
             }
-            if (AvailTime == -1 && ConnectType == "Online")
+            if (AvailTime == -1 && ConnectType == OnlineStatus)
             {
                 return "заряжается.";
             }
@@ -87,13 +90,14 @@ namespace Lab3_Battery
         /// </summary>
         public void DisableScreen(int newTime)
         {
+            const string command = "/c powercfg /x -monitor-timeout-dc ";
             Process cmd = new Process
             {
                 StartInfo =
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "cmd.exe",
-                    Arguments = "/c powercfg /x -monitor-timeout-dc " + newTime 
+                    FileName = Progname,
+                    Arguments = command + newTime 
                 }
             };
 
@@ -105,6 +109,7 @@ namespace Lab3_Battery
         /// </summary>
         private void GetTime()
         {
+            const string command = "/c powercfg /q";
             Process cmd = new Process
             {
                 StartInfo =
@@ -112,8 +117,8 @@ namespace Lab3_Battery
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "cmd.exe",
-                    Arguments = "/c powercfg /q"
+                    FileName = Progname,
+                    Arguments = command
                 }
             };
             cmd.Start();
