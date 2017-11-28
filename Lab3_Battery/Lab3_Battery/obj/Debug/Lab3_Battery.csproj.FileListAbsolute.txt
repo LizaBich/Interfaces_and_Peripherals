@@ -1,9 +1,0 @@
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\bin\Debug\Lab3_Battery.exe.config
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\bin\Debug\Lab3_Battery.exe
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\bin\Debug\Lab3_Battery.pdb
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.Form1.resources
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.Properties.Resources.resources
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.csproj.GenerateResource.Cache
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.csproj.CoreCompileInputs.cache
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.exe
-D:\Git\IaPD\Lab3_Battery\Lab3_Battery\obj\Debug\Lab3_Battery.pdb
