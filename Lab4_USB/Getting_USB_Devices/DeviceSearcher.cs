@@ -13,7 +13,7 @@ namespace Getting_USB_Devices
         /// <summary>
         /// Method which gets all usb-devices
         /// </summary>
-        /// <returns>List with usb-devices</returns>
+        /// <returns>List of usb-devices</returns>
         public static List<UsbDevice> GetDevices()
         {
             var devices = new List<UsbDevice>();
@@ -39,7 +39,7 @@ namespace Getting_USB_Devices
         /// Converts bytes to megabytes and returns converted to string result 
         /// </summary>
         /// <param name="value">Bytes</param>
-        /// <returns>string with result of conversion</returns>
+        /// <returns>result of conversion</returns>
         private static string BytesToMegaBytesString(long value) => value / 1024 / 1024 + " MB";
     }
 }

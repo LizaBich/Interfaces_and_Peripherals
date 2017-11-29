@@ -15,12 +15,12 @@ namespace Getting_USB_Devices
         private const string Path = "D:\\Downloads\\removedrive\\x64\\RemoveDrive.exe ";
 
         /// <summary>
-        /// Constructor of class
+        /// Class constructor
         /// </summary>
-        /// <param name="name">Name of usb-device</param>
-        /// <param name="totalFreeSpace">Total free space of usb-device</param>
+        /// <param name="name">Usb-device name</param>
+        /// <param name="totalFreeSpace">Usb-device total free space</param>
         /// <param name="occupiedSpace">Space which occupied by data</param>
-        /// <param name="totalSize">Total size of usb-device</param>
+        /// <param name="totalSize">Usb-device total size</param>
         /// <param name="isMtp">Does usb-device support MTP (Media Transfer Protocol)</param>
         public UsbDevice(string name, string totalFreeSpace, string occupiedSpace, string totalSize, bool isMtp)
         {
@@ -32,12 +32,12 @@ namespace Getting_USB_Devices
         }
 
         /// <summary>
-        /// Name of usb-device
+        /// Usb-device name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Total free space of usb-device
+        /// Usb-device total free space 
         /// </summary>
         public string TotalFreeSpace { get; set; }
 
@@ -47,7 +47,7 @@ namespace Getting_USB_Devices
         public string OccupiedSpace { get; set; }
 
         /// <summary>
-        /// Total size of usb-device
+        /// Usb-device total size 
         /// </summary>
         public string TotalSize { get; set; }
 
