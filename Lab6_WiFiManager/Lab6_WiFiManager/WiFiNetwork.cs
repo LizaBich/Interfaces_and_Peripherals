@@ -43,10 +43,12 @@ namespace Lab6_WiFiManager
             var wifi = new Wifi();
             var accessPoint = wifi.GetAccessPoints().FirstOrDefault(point => point.Name.Equals(Name));
             if (accessPoint == null) return false;
+
             var request = new AuthRequest(accessPoint)
             {
                 Password = password
             };
+            
             return accessPoint.Connect(request);
         }
     }

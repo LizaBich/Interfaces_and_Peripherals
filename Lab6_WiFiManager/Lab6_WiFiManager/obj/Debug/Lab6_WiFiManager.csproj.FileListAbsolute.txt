@@ -1,0 +1,10 @@
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.Form1.resources
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.Properties.Resources.resources
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.csproj.GenerateResource.Cache
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.csproj.CoreCompileInputs.cache
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\bin\Debug\Lab6_WiFiManager.exe.config
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\bin\Debug\Lab6_WiFiManager.exe
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\bin\Debug\Lab6_WiFiManager.pdb
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\bin\Debug\SimpleWifi.dll
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.exe
+D:\Git\IaPD\Lab6_WiFiManager\Lab6_WiFiManager\obj\Debug\Lab6_WiFiManager.pdb

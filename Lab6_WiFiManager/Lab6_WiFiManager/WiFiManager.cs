@@ -7,21 +7,21 @@ namespace Lab6_WiFiManager
     /// <summary>
     /// Subsidiary class 
     /// </summary>
-    public static class WiFiManager
+    public class WiFiManager
     {
         /// <summary>
         /// Object containing general information about wifi networks
         /// </summary>
-        private static readonly Wifi Wifi = new Wifi();
+        private readonly Wifi _wifi = new Wifi();
 
         /// <summary>
         /// Used to get all available wifi networks
         /// </summary>
         /// <returns>Networks list</returns>
-        public static List<WiFiNetwork> GetWiFiNetworks()
+        public List<WiFiNetwork> GetWiFiNetworks()
         {
-            var accessPoints = Wifi.GetAccessPoints();
-            return accessPoints.Select(point => new WiFiNetwork
+            var accessPoints = _wifi.GetAccessPoints();
+            var neadedPoints = accessPoints.Select(point => new WiFiNetwork
                 {
                     Name = point.Name,
                     Strength = point.SignalStrength + "%",
@@ -30,6 +30,7 @@ namespace Lab6_WiFiManager
                     IsConnected = point.IsConnected
                 })
                 .ToList();
+            return neadedPoints;
         }
     }
 }

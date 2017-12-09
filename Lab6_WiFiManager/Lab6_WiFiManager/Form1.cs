@@ -24,6 +24,8 @@ namespace Lab6_WiFiManager
         /// </summary>
         private readonly Timer _timer;
 
+        private readonly WiFiManager _manager;
+
         /// <summary>
         /// Message which displayed when connection is existing
         /// </summary>
@@ -35,6 +37,7 @@ namespace Lab6_WiFiManager
         public Form1()
         {
             InitializeComponent();
+            _manager = new WiFiManager();
             UpdateData();
             ConnectToNet.Enabled = false;
             Password.Enabled = false;
@@ -55,7 +58,7 @@ namespace Lab6_WiFiManager
         private void UpdateData()
         {
             ListOfNetworks.Clear();
-            _networks = WiFiManager.GetWiFiNetworks();
+            _networks = _manager.GetWiFiNetworks();
             foreach (var network in _networks)
             {
                 ListOfNetworks.Items.Add(network.Name + " (" + network.Strength + ")");
@@ -116,7 +119,7 @@ namespace Lab6_WiFiManager
         {
             const string error = "Error";
             if (Password.Text.Length <= 0) return;
-            if (_networks[_index].Connect(Password.Text))
+            if (_networks[_index].Connect(Password.Text ?? string.Empty))
             {
                 Status.Text = ConnectString;
                 Password.Enabled = false;
