@@ -9,3 +9,4 @@ D:\Git\IaPD\Lab4_USB\Getting_USB_Devices\obj\Debug\Getting_USB_Devices.csproj.Ge
 D:\Git\IaPD\Lab4_USB\Getting_USB_Devices\obj\Debug\Getting_USB_Devices.csproj.CoreCompileInputs.cache
 D:\Git\IaPD\Lab4_USB\Getting_USB_Devices\obj\Debug\Getting_USB_Devices.exe
 D:\Git\IaPD\Lab4_USB\Getting_USB_Devices\obj\Debug\Getting_USB_Devices.pdb
+D:\Git\IaPD\Lab4_USB\Getting_USB_Devices\obj\Debug\Getting_USB_Devices.csprojResolveAssemblyReference.cache

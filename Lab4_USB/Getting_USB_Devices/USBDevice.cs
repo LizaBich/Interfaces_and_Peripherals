@@ -63,8 +63,7 @@ namespace Getting_USB_Devices
         public string Eject()
         {
             List<string> output = new List<string>();
-
-            // 
+ 
             var startInfo =
                 new ProcessStartInfo(Path, Name.Remove(1))
                 {
