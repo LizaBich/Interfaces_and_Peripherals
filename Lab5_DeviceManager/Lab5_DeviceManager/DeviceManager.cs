@@ -4,12 +4,22 @@ using System.Management;
 
 namespace Lab5_DeviceManager
 {
-    public static class DeviceManager
+    /// <summary>
+    /// Class that gets list of devices
+    /// </summary>
+    public class DeviceManager
     {
-        public static ManagementObjectSearcher Searcher = new ManagementObjectSearcher(new ManagementScope("\\\\.\\root\\cimv2"), 
-            new SelectQuery("SELECT * FROM Win32_PnPEntity")); 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ManagementObjectSearcher Searcher = new ManagementObjectSearcher(new ManagementScope("\\\\.\\root\\cimv2"), 
+            new SelectQuery("SELECT * FROM Win32_PnPEntity"));
 
-        public static List<Device> GetDevices()
+        /// <summary>
+        /// Method that gets list of devices
+        /// </summary>
+        /// <returns>List of devices</returns>
+        public List<Device> GetDevices()
         {
             return (from ManagementBaseObject o in Searcher.Get()
                 select o as ManagementObject
@@ -30,7 +40,12 @@ namespace Lab5_DeviceManager
                 }).ToList();
         }
 
-        private static string[] GetDriverInfo(ManagementObject device)
+        /// <summary>
+        /// Gets information about device
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns>Array of strings with</returns>
+        private string[] GetDriverInfo(ManagementObject device)
         {
             var driverInfo = new string[2];
             foreach (var driverParameter in device.GetRelated("Win32_SystemDriver"))

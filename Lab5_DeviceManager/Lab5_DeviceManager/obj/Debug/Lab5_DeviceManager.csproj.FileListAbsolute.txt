@@ -1,0 +1,10 @@
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\bin\Debug\Lab5_DeviceManager.exe.config
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\bin\Debug\Lab5_DeviceManager.exe
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\bin\Debug\Lab5_DeviceManager.pdb
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.Form1.resources
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.Properties.Resources.resources
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.csproj.GenerateResource.Cache
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.csproj.CoreCompileInputs.cache
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.exe
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.pdb
+D:\Git\IaPD\Lab5_DeviceManager\Lab5_DeviceManager\obj\Debug\Lab5_DeviceManager.csprojResolveAssemblyReference.cache
