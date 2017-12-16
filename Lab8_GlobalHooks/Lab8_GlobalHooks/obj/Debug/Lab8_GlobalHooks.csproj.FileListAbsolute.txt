@@ -1,0 +1,12 @@
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\obj\Debug\Lab8_GlobalHooks.Properties.Resources.resources
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\obj\Debug\Lab8_GlobalHooks.csproj.GenerateResource.Cache
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\obj\Debug\Lab8_GlobalHooks.csproj.CoreCompileInputs.cache
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Lab8_GlobalHooks.exe.config
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Lab8_GlobalHooks.exe
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Lab8_GlobalHooks.pdb
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Gma.System.MouseKeyHook.dll
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Newtonsoft.Json.dll
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\SimpleWifi.dll
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\bin\Debug\Newtonsoft.Json.xml
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\obj\Debug\Lab8_GlobalHooks.exe
+D:\Git\IaPD\Lab8_GlobalHooks\Lab8_GlobalHooks\obj\Debug\Lab8_GlobalHooks.pdb

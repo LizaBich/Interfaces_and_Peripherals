@@ -1,8 +1,4 @@
-﻿################################################################################
-# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
-################################################################################
-
-/Lab1_PCI/.vs/Lab1_PCI/v15/Browse.VC.opendb
-/Lab1.2/.vs/Lab1.2/v15/Browse.VC.opendb
-/Lab1.2/.vs/Lab1.2/v15/Browse.VC.opendb
-/Lab2_HDD/.vs/Lab2_HDD/v15/Browse.VC.opendb
+..\Lab8_GlobalHooks\.vs
+..\Lab8_GlobalHooks\Lab8_GlobalHooks\bin
+..\Lab8_GlobalHooks\Lab8_GlobalHooks\obj
+..\Lab8_GlobalHooks\packages
