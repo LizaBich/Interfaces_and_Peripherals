@@ -1,24 +1,26 @@
+using System.Diagnostics;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
-using SimpleWifi;
 
 namespace Lan8._1_GlobalHooks
 {
     internal class HookController
     {
-
         public delegate void ShowMainWindowHandler();
 
         public event ShowMainWindowHandler ShowWindow;
 
         private readonly IKeyboardMouseEvents _globalHook = Hook.GlobalEvents();
+
+        private readonly System.Timers.Timer _timer = new System.Timers.Timer(2000);
+
+        private readonly Stopwatch _tick = new Stopwatch();
+
         private readonly Logger _logController;
-        private readonly Wifi _wifi = new Wifi();
 
         public HookController(ConfigFile config)
         {
             _logController = new Logger(config);
-
             _globalHook.KeyDown += KeyDown;
             _globalHook.MouseClick += MouseClick;
         }
@@ -32,14 +34,25 @@ namespace Lan8._1_GlobalHooks
         {
             switch (e.KeyData)
             {
-                case Keys.Alt | Keys.Space:
+                case Keys.A:
+                    _tick.Restart();
+                    e.Handled = true;
+                    break;
+                case Keys.Control | Keys.Shift | Keys.Tab:
                     ShowWindow?.Invoke();
                     e.Handled = true;
-                    return;
-                case Keys.Control | Keys.Shift | Keys.W:
-                    _wifi.Disconnect();
-                    e.Handled = true;
-                    return;
+                    break;
+                default:
+                    if (_tick.IsRunning && _tick.Elapsed.Seconds < 2)
+                    {
+                        e.SuppressKeyPress = true;
+                    }
+
+                    if (_tick.IsRunning && _tick.Elapsed.Seconds > 2)
+                    {
+                        _tick.Stop();
+                    }
+                    break;
             }
             _logController.LogKeyboard(e.KeyData.ToString());
         }
